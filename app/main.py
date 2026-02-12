@@ -1,14 +1,18 @@
 
 def copy_file(command: str) -> None:
-    command_ls = command.split(" ")
-    if command_ls[0] != "cp":
+    command_parts = command.split(" ")
+    if len(command_parts) != 3:
         return None
+    source_file_name = command_parts[1]
+    dest_file_name = command_parts[2]
     try:
-        if command_ls[1] == command_ls[2]:
+        if command_parts[0] != "cp":
             return None
-        with (open(command_ls[1], "r") as file_in,
-              open(command_ls[2], "w") as file_out):
+        if source_file_name == dest_file_name:
+            return None
+        with (open(source_file_name, "r") as file_in,
+                open(dest_file_name, "w") as file_out):
             content = file_in.read()
             file_out.write(content)
-    except Exception:
+    except FileNotFoundError:
         return None
